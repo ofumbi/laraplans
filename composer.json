@@ -1,5 +1,5 @@
 {
-    "name": "cimon77/laraplans",
+    "name": "cimons/laraplans",
     "description": "SaaS style recurring plans for Laravel.",
     "keywords": ["plans", "laravel", "subscriptions", "memberships"],
     "license": "MIT",
