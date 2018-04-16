@@ -27,6 +27,7 @@ class CreatePlanSubscriptionsTable extends Migration
             $table->timestamp('canceled_at')->nullable();
             $table->timestamps();
 
+            $table->foreign('subscribable_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
         });
     }
