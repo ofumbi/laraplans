@@ -21,6 +21,8 @@ class CreatePlansTable extends Migration
             $table->smallInteger('interval_count')->default(1);
             $table->smallInteger('trial_period_days')->nullable();
             $table->smallInteger('sort_order')->nullable();
+            $table->string('google_product_id')->nullable();
+            $table->string('apple_product_id')->nullable();
             $table->timestamps();
         });
     }
