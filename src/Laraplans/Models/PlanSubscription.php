@@ -267,6 +267,11 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      */
     public function renew()
     {
+        if ($this->isCanceledImmediately()) {
+            throw new LogicException(
+                'Unable to renew canceled ended subscription.'
+            );
+        }
         if ($this->isEnded() and $this->isCanceled()) {
             throw new LogicException(
                 'Unable to renew canceled ended subscription.'
