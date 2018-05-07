@@ -288,6 +288,25 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     }
 
     /**
+     * Check if the user can subscribe to any other subscription. Must be able to subscribe only if the previous subscription is expired and recurring is cancelled
+     *
+     * @return bool
+     */
+    public function canSubscribeToOtherPlan()
+    {
+        if ($this->isCanceledImmediately()) {
+            return true;
+        }
+
+        if ($this->isEnded() and $this->isCanceled()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    /**
      * Renew subscription period.
      *
      * @throws  \LogicException
