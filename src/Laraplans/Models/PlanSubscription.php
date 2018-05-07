@@ -29,9 +29,9 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     /**
      * Subscription statuses
      */
-    const STATUS_ENDED      = 'ended';
-    const STATUS_ACTIVE     = 'active';
-    const STATUS_CANCELED   = 'canceled';
+    const STATUS_ENDED = 'ended';
+    const STATUS_ACTIVE = 'active';
+    const STATUS_CANCELED = 'canceled';
 
     /**
      * The attributes that are mass assignable.
@@ -53,8 +53,12 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at',
-        'canceled_at', 'trial_ends_at', 'ends_at', 'starts_at'
+        'created_at',
+        'updated_at',
+        'canceled_at',
+        'trial_ends_at',
+        'ends_at',
+        'starts_at'
     ];
 
     /**
@@ -89,7 +93,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
 
         static::saving(function ($model) {
             // Set period if it wasn't set
-            if (! $model->ends_at) {
+            if ( ! $model->ends_at) {
                 $model->setNewPeriod();
             }
         });
@@ -118,10 +122,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      */
     public function usage()
     {
-        return $this->hasMany(
-            config('laraplans.models.plan_subscription_usage'),
-            'subscription_id'
-        );
+        return $this->hasMany(config('laraplans.models.plan_subscription_usage'), 'subscription_id');
     }
 
     /**
@@ -151,7 +152,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      */
     public function isActive()
     {
-        if ((! $this->isEnded() or $this->onTrial()) and ! $this->isCanceledImmediately()) {
+        if (( ! $this->isEnded() or $this->onTrial()) and ! $this->isCanceledImmediately()) {
             return true;
         }
 
@@ -165,7 +166,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      */
     public function onTrial()
     {
-        if (! is_null($trialEndsAt = $this->trial_ends_at)) {
+        if ( ! is_null($trialEndsAt = $this->trial_ends_at)) {
             return Carbon::now()->lt(Carbon::instance($trialEndsAt));
         }
 
@@ -179,7 +180,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      */
     public function isCanceled()
     {
-        return  ! is_null($this->canceled_at);
+        return ! is_null($this->canceled_at);
     }
 
     /**
@@ -189,7 +190,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      */
     public function isCanceledImmediately()
     {
-        return  (! is_null($this->canceled_at) and $this->canceled_immediately === true);
+        return ( ! is_null($this->canceled_at) and $this->canceled_immediately === true);
     }
 
     /**
@@ -208,6 +209,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      * Cancel subscription.
      *
      * @param  bool $immediately
+     *
      * @return $this
      */
     public function cancel($immediately = false)
@@ -228,9 +230,36 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     }
 
     /**
+     * Resume the cancelled subscription.
+     *
+     * @return $this
+     *
+     * @throws \LogicException
+     */
+    public function resume()
+    {
+
+        if ($this->isCanceledImmediately()) {
+            throw new LogicException('Unable to renew canceled ended subscription.');
+        }
+
+        if ( ! $this->onGracePeriod()) {
+            throw new LogicException('Unable to resume subscription that is not within grace period.');
+        }
+        $subscription = $this;
+
+        $subscription->canceled_at = null;
+        $subscription->save();
+
+
+        return $this;
+    }
+
+    /**
      * Change subscription plan.
      *
      * @param mixed $plan Plan Id or Plan Model Instance
+     *
      * @return $this
      */
     public function changePlan($plan)
@@ -243,8 +272,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
         // and interval_count) we will update the billing dates starting
         // today... and sice we are basically creating a new billing cycle,
         // the usage data will be cleared.
-        if (is_null($this->plan) or $this->plan->interval !== $plan->interval or
-                $this->plan->interval_count !== $plan->interval_count) {
+        if (is_null($this->plan) or $this->plan->interval !== $plan->interval or $this->plan->interval_count !== $plan->interval_count) {
             // Set period
             $this->setNewPeriod($plan->interval, $plan->interval_count);
 
@@ -268,14 +296,10 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     public function renew()
     {
         if ($this->isCanceledImmediately()) {
-            throw new LogicException(
-                'Unable to renew canceled ended subscription.'
-            );
+            throw new LogicException('Unable to renew canceled ended subscription.');
         }
         if ($this->isEnded() and $this->isCanceled()) {
-            throw new LogicException(
-                'Unable to renew canceled ended subscription.'
-            );
+            throw new LogicException('Unable to renew canceled ended subscription.');
         }
 
         $subscription = $this;
@@ -315,6 +339,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      *
      * @param  \Illuminate\Database\Eloquent\Builder
      * @param  int $subscribable
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeByUser($query, $subscribable)
@@ -330,7 +355,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     public function scopeFindEndingTrial($query, $dayRange = 3)
     {
         $from = Carbon::now();
-        $to = Carbon::now()->addDays($dayRange);
+        $to   = Carbon::now()->addDays($dayRange);
 
         $query->whereBetween('trial_ends_at', [$from, $to]);
     }
@@ -353,7 +378,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     public function scopeFindEndingPeriod($query, $dayRange = 3)
     {
         $from = Carbon::now();
-        $to = Carbon::now()->addDays($dayRange);
+        $to   = Carbon::now()->addDays($dayRange);
 
         $query->whereBetween('ends_at', [$from, $to]);
     }
@@ -374,6 +399,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
      * @param  string $interval
      * @param  int $interval_count
      * @param  string $start Start date
+     *
      * @return  $this
      */
     protected function setNewPeriod($interval = '', $interval_count = '', $start = '')
@@ -389,8 +415,23 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
         $period = new Period($interval, $interval_count, $start);
 
         $this->starts_at = $period->getStartDate();
-        $this->ends_at = $period->getEndDate();
+        $this->ends_at   = $period->getEndDate();
 
         return $this;
     }
+
+    /**
+     * Determine if the subscription is within its grace period after cancellation.
+     *
+     * @return bool
+     */
+    public function onGracePeriod()
+    {
+        if ( ! is_null($endsAt = $this->ends_at)) {
+            return Carbon::now()->lt(Carbon::instance($endsAt));
+        } else {
+            return false;
+        }
+    }
+
 }
