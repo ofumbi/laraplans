@@ -163,7 +163,7 @@ class PlanSubscriptionTest extends TestCase
         $this->assertFalse($this->subscription->isActive());
     }
 
-     /**
+    /**
      * Can be renewed.
      *
      * @test
