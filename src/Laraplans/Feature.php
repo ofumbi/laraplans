@@ -38,6 +38,7 @@ class Feature
      */
     public function __construct($feature_code)
     {
+
         if (!self::isValid($feature_code)) {
             throw new InvalidPlanFeatureException($feature_code);
         }
@@ -179,5 +180,43 @@ class Feature
         $period = new Period($this->resettable_interval, $this->resettable_count, $dateFrom);
 
         return $period->getEndDate();
+    }
+
+    /**
+     * Calculate new valid date for subscription usage
+     * @param $valid_until
+     *
+     * @return static
+     */
+    public function calculateValidUntilDate($valid_until)
+    {
+        $vYear  = $valid_until->year;
+        $vMonth = $valid_until->month;
+        $vDay   = $valid_until->day;
+
+        $vHour   = $valid_until->hour;
+        $vMinute = $valid_until->minute;
+        $vSecond = $valid_until->second;
+
+        $currentDate = Carbon::now();
+
+//        $currentDate = Carbon::create('2018', '07', '04', '23', '58', '00');
+
+        $cYear  = $currentDate->year;
+        $cMonth = $currentDate->month;
+        $cDay   = $currentDate->day;
+
+        $cHour   = $currentDate->hour;
+        $cMinute = $currentDate->minute;
+        $cSecond = $currentDate->second;
+
+
+        if ($vHour * 60 + $vMinute > $cHour * 60 + $cMinute) {
+            $newValidDate = Carbon::create($cYear, $cMonth, $cDay, $vHour, $vMinute, $vSecond);
+        } else {
+            $newValidDate = Carbon::create($cYear, $cMonth, $cDay + 1, $vHour, $vMinute, $vSecond);
+        }
+
+        return $newValidDate;
     }
 }
