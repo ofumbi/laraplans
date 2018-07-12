@@ -109,6 +109,7 @@ class SubscriptionUsageManager
     public function subscriptionUsageRenew()
     {
         $usage = $this->subscription->usage()->get();
+
         // Now we reset the counter and update valid_until date
         foreach ($usage as $key => $value) {
             $feature = new Feature($usage[$key]->code);
@@ -118,8 +119,8 @@ class SubscriptionUsageManager
                 $usage[$key]->used        = 0;
                 $usage[$key]->save();
             }
-
-            return $usage;
         }
+
+        return $usage;
     }
 }
