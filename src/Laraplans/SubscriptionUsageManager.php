@@ -38,6 +38,7 @@ class SubscriptionUsageManager
         $usage = $this->subscription->usage()->firstOrNew([
             'code' => $feature->getFeatureCode(),
         ]);
+
         if ($feature->isResettable()) {
             // Set expiration date when the usage record is new
             // or doesn't have one.
@@ -122,5 +123,23 @@ class SubscriptionUsageManager
         }
 
         return $usage;
+    }
+
+    /**
+     * Renew subscription usage when expired and reset used count
+     *
+     * @param $feature name of feature
+     */
+    public function subscriptionFeatureUsageRenew($feature)
+    {
+        $feature = new Feature($feature);
+        $usage   = $this->subscription->usage()->firstOrNew([
+            'code' => $feature->getFeatureCode(),
+        ]);
+        if ($usage->isExpired()) {
+            $usage->valid_until = $feature->calculateValidUntilDate($usage->valid_until);
+            $usage->used        = 0;
+            $usage->save();
+        }
     }
 }
