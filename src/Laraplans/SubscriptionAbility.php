@@ -28,6 +28,7 @@ class SubscriptionAbility
      * available uses.
      *
      * @param string $feature
+     *
      * @return boolean
      */
     public function canUse($feature)
@@ -59,6 +60,7 @@ class SubscriptionAbility
      * Get how many times the feature has been used.
      *
      * @param  string $feature
+     *
      * @return int
      */
     public function consumed($feature)
@@ -76,17 +78,19 @@ class SubscriptionAbility
      * Get the available uses.
      *
      * @param  string $feature
+     *
      * @return int
      */
     public function remainings($feature)
     {
-        return ((int) $this->value($feature) - (int) $this->consumed($feature));
+        return ((int)$this->value($feature) - (int)$this->consumed($feature));
     }
 
     /**
      * Check if subscription plan feature is enabled.
      *
      * @param string $feature
+     *
      * @return bool
      */
     public function enabled($feature)
@@ -111,6 +115,7 @@ class SubscriptionAbility
      *
      * @param  string $feature
      * @param  mixed $default
+     *
      * @return mixed
      */
     public function value($feature, $default = null)
@@ -122,5 +127,23 @@ class SubscriptionAbility
         }
 
         return $default;
+    }
+
+    /**
+     * Get feature ability full details
+     *
+     * @param $feature
+     *
+     * @return array
+     */
+    public function getFeatureAbilityDetails($feature)
+    {
+        $ability               = [];
+        $ability['canUse']     = $this->canUse($feature);
+        $ability['value']      = $this->value($feature);
+        $ability['remainings'] = ($ability['value'] == 'unlimited') ? 'unlimited' : $this->remainings($feature);
+        $ability['consumed']   = $this->consumed($feature);
+
+        return $ability;
     }
 }
