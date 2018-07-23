@@ -141,7 +141,7 @@ class SubscriptionAbility
         $ability               = [];
         $ability['canUse']     = $this->canUse($feature);
         $ability['value']      = $this->value($feature);
-        $ability['remainings'] = ($ability['value'] == 'unlimited') ? 'unlimited' : $this->remainings($feature);
+        $ability['remaining'] = ($ability['value'] == 'unlimited') ? 'unlimited' : $this->remainings($feature);
         $ability['consumed']   = $this->consumed($feature);
 
         return $ability;
