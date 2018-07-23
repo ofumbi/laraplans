@@ -288,24 +288,24 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
         return $this;
     }
 
-    /**
-     * Check if the user can subscribe to any other subscription. Must be able to subscribe only if the previous subscription is expired and recurring is cancelled
-     *
-     * @return bool
-     */
-    public function canSubscribeToOtherPlan()
-    {
-        if ($this->isCanceledImmediately()) {
-            return true;
-        }
-
-        if ($this->isEnded() and $this->isCanceled()) {
-            return true;
-        }
-
-        return false;
-
-    }
+//    /**
+//     * Check if the user can subscribe to any other subscription. Must be able to subscribe only if the previous subscription is expired and recurring is cancelled
+//     *
+//     * @return bool
+//     */
+//    public function canSubscribeToOtherPlan()
+//    {
+//        if ($this->isCanceledImmediately()) {
+//            return true;
+//        }
+//
+//        if ($this->isEnded() and $this->isCanceled()) {
+//            return true;
+//        }
+//
+//        return false;
+//
+//    }
 
     /**
      * Renew subscription period.
@@ -454,4 +454,29 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
         }
     }
 
+    /**
+     * Check if the user is subscribed to free plan
+     *
+     * @return bool
+     */
+    public function checkIfSubscribedToFreePlan()
+    {
+        $plan = Plan::find($this->plan_id);
+
+        if ($plan->plan_code == 'standard_plan') {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function canSubscribeToOtherPlan()
+    {
+        $status = $this->checkIfSubscribedToFreePlan();
+        if ($status) {
+            return true;
+        }
+
+        return false;
+    }
 }
