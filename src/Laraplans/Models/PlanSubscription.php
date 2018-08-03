@@ -340,6 +340,33 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
         return $this;
     }
 
+    public function renewIos($startDate, $endDate)
+    {
+        if ($this->isCanceledImmediately()) {
+            throw new LogicException('Unable to renew canceled ended subscription.');
+        }
+        if ($this->isEnded() and $this->isCanceled()) {
+            throw new LogicException('Unable to renew canceled ended subscription.');
+        }
+        $subscription = $this;
+
+        DB::transaction(function () use ($subscription, $startDate, $endDate) {
+            // Clear usage data
+            $usageManager = new SubscriptionUsageManager($subscription);
+            $usageManager->clear();
+
+            // Renew period
+            $subscription->starts_at = $startDate;
+            $subscription->ends_at = $endDate;
+            $subscription->canceled_at = null;
+            $subscription->save();
+        });
+
+        event(new SubscriptionRenewed($this));
+
+        return $this;
+    }
+
     /**
      * Get Subscription Ability instance.
      *

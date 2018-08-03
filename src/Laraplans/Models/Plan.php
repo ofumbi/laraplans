@@ -22,6 +22,8 @@ class Plan extends Model implements PlanInterface
         'interval_count',
         'trial_period_days',
         'sort_order',
+        'google_product_id',
+        'apple_product_id'
     ];
 
     /**
