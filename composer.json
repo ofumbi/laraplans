@@ -21,6 +21,13 @@
             "Ofumbi\\Laraplans\\": "src/Laraplans/"
         }
     },
+	 "extra": {
+        "laravel": {
+            "providers": [
+                "Ofumbi\\Laraplans\\LaraplansServiceProvider"
+            ]
+        }
+    },
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php"
