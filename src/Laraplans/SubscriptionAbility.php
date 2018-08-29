@@ -1,8 +1,8 @@
 <?php
 
-namespace Gerardojbaez\Laraplans;
+namespace Ofumbi\Laraplans;
 
-use Gerardojbaez\Laraplans\Feature;
+use Ofumbi\Laraplans\Feature;
 
 class SubscriptionAbility
 {

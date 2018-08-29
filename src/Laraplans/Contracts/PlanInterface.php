@@ -1,6 +1,6 @@
 <?php
 
-namespace Gerardojbaez\Laraplans\Contracts;
+namespace Ofumbi\Laraplans\Contracts;
 
 interface PlanInterface
 {

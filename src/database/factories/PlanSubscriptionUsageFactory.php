@@ -1,7 +1,7 @@
 <?php
 
-use Gerardojbaez\Laraplans\Models\PlanSubscription;
-use Gerardojbaez\Laraplans\Models\PlanSubscriptionUsage;
+use Ofumbi\Laraplans\Models\PlanSubscription;
+use Ofumbi\Laraplans\Models\PlanSubscriptionUsage;
 
 $factory->define(PlanSubscriptionUsage::class, function (Faker\Generator $faker) {
     return [

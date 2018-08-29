@@ -2,12 +2,12 @@
 
 namespace Gerarodjbaez\Laraplans\Tests\Integration;
 
-use Gerardojbaez\Laraplans\Models\Plan;
-use Gerardojbaez\Laraplans\Tests\TestCase;
-use Gerardojbaez\Laraplans\Tests\Models\User;
-use Gerardojbaez\Laraplans\Models\PlanFeature;
-use Gerardojbaez\Laraplans\SubscriptionUsageManger;
-use Gerardojbaez\Laraplans\Models\PlanSubscriptionUsage;
+use Ofumbi\Laraplans\Models\Plan;
+use Ofumbi\Laraplans\Tests\TestCase;
+use Ofumbi\Laraplans\Tests\Models\User;
+use Ofumbi\Laraplans\Models\PlanFeature;
+use Ofumbi\Laraplans\SubscriptionUsageManger;
+use Ofumbi\Laraplans\Models\PlanSubscriptionUsage;
 
 class SubscriptionUsageMangerTest extends TestCase
 {

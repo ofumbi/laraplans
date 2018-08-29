@@ -1,8 +1,8 @@
 <?php
 
-namespace Gerardojbaez\Laraplans\Events;
+namespace Ofumbi\Laraplans\Events;
 
-use Gerardojbaez\Laraplans\Models\PlanSubscription;
+use Ofumbi\Laraplans\Models\PlanSubscription;
 use Illuminate\Queue\SerializesModels;
 
 class SubscriptionRenewed

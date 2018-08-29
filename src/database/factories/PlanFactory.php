@@ -1,6 +1,6 @@
 <?php
 
-use Gerardojbaez\Laraplans\Models\Plan;
+use Ofumbi\Laraplans\Models\Plan;
 
 $factory->define(Plan::class, function (Faker\Generator $faker) {
     return [

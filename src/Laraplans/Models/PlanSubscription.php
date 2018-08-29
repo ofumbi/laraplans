@@ -1,26 +1,26 @@
 <?php
 
-namespace Gerardojbaez\Laraplans\Models;
+namespace Ofumbi\Laraplans\Models;
 
 use DB;
 use App;
 use Carbon\Carbon;
 use LogicException;
-use Gerardojbaez\Laraplans\Period;
+use Ofumbi\Laraplans\Period;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Eloquent\Model;
-use Gerardojbaez\Laraplans\Models\PlanFeature;
-use Gerardojbaez\Laraplans\SubscriptionAbility;
-use Gerardojbaez\Laraplans\Traits\BelongsToPlan;
-use Gerardojbaez\Laraplans\Contracts\PlanInterface;
-use Gerardojbaez\Laraplans\SubscriptionUsageManager;
-use Gerardojbaez\Laraplans\Events\SubscriptionCreated;
-use Gerardojbaez\Laraplans\Events\SubscriptionRenewed;
-use Gerardojbaez\Laraplans\Events\SubscriptionCanceled;
-use Gerardojbaez\Laraplans\Events\SubscriptionPlanChanged;
-use Gerardojbaez\Laraplans\Contracts\PlanSubscriptionInterface;
-use Gerardojbaez\Laraplans\Exceptions\InvalidPlanFeatureException;
-use Gerardojbaez\Laraplans\Exceptions\FeatureValueFormatIncompatibleException;
+use Ofumbi\Laraplans\Models\PlanFeature;
+use Ofumbi\Laraplans\SubscriptionAbility;
+use Ofumbi\Laraplans\Traits\BelongsToPlan;
+use Ofumbi\Laraplans\Contracts\PlanInterface;
+use Ofumbi\Laraplans\SubscriptionUsageManager;
+use Ofumbi\Laraplans\Events\SubscriptionCreated;
+use Ofumbi\Laraplans\Events\SubscriptionRenewed;
+use Ofumbi\Laraplans\Events\SubscriptionCanceled;
+use Ofumbi\Laraplans\Events\SubscriptionPlanChanged;
+use Ofumbi\Laraplans\Contracts\PlanSubscriptionInterface;
+use Ofumbi\Laraplans\Exceptions\InvalidPlanFeatureException;
+use Ofumbi\Laraplans\Exceptions\FeatureValueFormatIncompatibleException;
 
 class PlanSubscription extends Model implements PlanSubscriptionInterface
 {
@@ -73,7 +73,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     /**
      * Subscription Ability Manager instance.
      *
-     * @var Gerardojbaez\Laraplans\SubscriptionAbility
+     * @var Ofumbi\Laraplans\SubscriptionAbility
      */
     protected $ability;
 
@@ -370,7 +370,7 @@ class PlanSubscription extends Model implements PlanSubscriptionInterface
     /**
      * Get Subscription Ability instance.
      *
-     * @return \Gerardojbaez\Laraplans\SubscriptionAbility
+     * @return \Ofumbi\Laraplans\SubscriptionAbility
      */
     public function ability()
     {

@@ -1,16 +1,16 @@
 <?php
 
-namespace Gerardojbaez\Laraplans;
+namespace Ofumbi\Laraplans;
 
 use Illuminate\Support\ServiceProvider;
-use Gerardojbaez\Laraplans\SubscriptionBuilder;
-use Gerardojbaez\Laraplans\SubscriptionResolver;
-use Gerardojbaez\Laraplans\Contracts\PlanInterface;
-use Gerardojbaez\Laraplans\Contracts\PlanFeatureInterface;
-use Gerardojbaez\Laraplans\Contracts\PlanSubscriptionInterface;
-use Gerardojbaez\Laraplans\Contracts\SubscriptionBuilderInterface;
-use Gerardojbaez\Laraplans\Contracts\SubscriptionResolverInterface;
-use Gerardojbaez\Laraplans\Contracts\PlanSubscriptionUsageInterface;
+use Ofumbi\Laraplans\SubscriptionBuilder;
+use Ofumbi\Laraplans\SubscriptionResolver;
+use Ofumbi\Laraplans\Contracts\PlanInterface;
+use Ofumbi\Laraplans\Contracts\PlanFeatureInterface;
+use Ofumbi\Laraplans\Contracts\PlanSubscriptionInterface;
+use Ofumbi\Laraplans\Contracts\SubscriptionBuilderInterface;
+use Ofumbi\Laraplans\Contracts\SubscriptionResolverInterface;
+use Ofumbi\Laraplans\Contracts\PlanSubscriptionUsageInterface;
 
 class LaraplansServiceProvider extends ServiceProvider
 {
